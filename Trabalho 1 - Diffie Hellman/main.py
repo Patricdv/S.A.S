@@ -1,17 +1,14 @@
-root = input("Type the value of root:")
-root = int(root)
+root = 3
+prime_mod = 17
 
-prime_mod = input("Type the value of prime mod:")
-prime_mod = int(prime_mod)
+secretKey = input("Type the private key: ")
+secretKey = int(secretKey)
 
-firstPersonKey = input("First person - type the private key: ")
-firstPersonKey = int(firstPersonKey)
+outerKey = input("Type the outer key: ")
+outerKey = int(outerKey)
 
-secondPersonKey = input("Second person - type the private key: ")
-secondPersonKey = int(secondPersonKey)
+print "The private key result is: ",
+print((root**secretKey) % prime_mod)
 
-print "The first person result is: ",
-print((root**firstPersonKey) % prime_mod)
-
-print "The second person result is: ",
-print((root**secondPersonKey) % prime_mod)
+print "The outer result is: ",
+print((outerKey**secretKey) % prime_mod)

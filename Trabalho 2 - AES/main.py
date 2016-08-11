@@ -7,7 +7,6 @@ BLOCK_SIZE = 32
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
 unpad = lambda s : s[0:-ord(s[-1])]
 
-
 class AESCipher:
     def __init__(self, key):
         self.key = key

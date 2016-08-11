@@ -20,13 +20,13 @@ class AESCipher:
 
     def decrypt(self, encrypted_message):
         encrypted_message = base64.b64decode(encrypted_message)
-        iv = encrypted_message[:32]
+        iv = encrypted_message[:16]
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return unpad(cipher.decrypt(enc[32:]))
+        return unpad(cipher.decrypt(encrypted_message[16:]))
 
 #main
-message = input("Input the message to encrypt:")
-cipher = AESCipher(os.random(BLOCK_SIZE))
+message = raw_input("Input the message to encrypt:")
+cipher = AESCipher(os.urandom(BLOCK_SIZE))
 cryptedMessage = cipher.encrypt(message)
 decryptedMessage = cipher.decrypt(cryptedMessage)
 

@@ -1,0 +1,16 @@
+Criar dois programas.
+Criar chave privada e chave publica.
+Programa 1 gera um certificado digital em cima de um arquivo qualquer  
+programa 2 testa. RSA precisa de duas chaves. RSA cifra a saida do SHA256.
+programa 2 le arquivo, usa a chave publica e RSA e confere se a assinatura e valida.
+
+SHA256 = h(arquivo)
+RSA = e(h(arquivo))
+e = chave privada
+d = chave publica
+
+Programa 1 - Arquivo => Arquivo + Hash do arquivo + RSA do arquivo + chave privada.
+Programa 2 - chavepublica(chaveprivada(hash(Arquivo)))
+
+d(e(x)) = x
+e(d(x)) = x

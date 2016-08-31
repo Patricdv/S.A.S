@@ -1,4 +1,4 @@
-/* 
+/*
  * udpclient.c - A simple UDP client
  * usage: udpclient <host> <port>
  */
@@ -9,11 +9,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netdb.h> 
+#include <netdb.h>
 
 #define BUFSIZE 1024
 
-/* 
+/*
  * error - wrapper for perror
  */
 void error(char *msg) {
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 
     /* socket: create the socket */
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0) 
+    if (sockfd < 0)
         error("ERROR opening socket");
 
     /* gethostbyname: get the server's DNS entry */
@@ -52,24 +52,37 @@ int main(int argc, char **argv) {
     /* build the server's Internet address */
     bzero((char *) &serveraddr, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, 
+    bcopy((char *)server->h_addr,
 	  (char *)&serveraddr.sin_addr.s_addr, server->h_length);
     serveraddr.sin_port = htons(portno);
 
     /* get a message from the user */
     bzero(buf, BUFSIZE);
-    printf("Please enter msg: ");
-    fgets(buf, BUFSIZE, stdin);
+    /*printf("Please enter msg: "); */
+    /*fgets(buf, BUFSIZE, stdin); */
+
+    strcpy(buf, "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+    /* pvtot: 0000000000400a27 */
+    buf[strlen(buf)+1]  = 0x27;
+    buf[strlen(buf)+2]  = 0x0a;
+    buf[strlen(buf)+3]  = 0x40;
+
+    /* send the message to the server */
+    serverlen = sizeof(serveraddr);
+    n = sendto(sockfd, buf, strlen(buf)+2, 0, &serveraddr, serverlen);
+    if (n < 0)
+      error("ERROR in sendto");
 
     /* send the message to the server */
     serverlen = sizeof(serveraddr);
     n = sendto(sockfd, buf, strlen(buf), 0, &serveraddr, serverlen);
-    if (n < 0) 
+    if (n < 0)
       error("ERROR in sendto");
-    
+
     /* print the server's reply */
     n = recvfrom(sockfd, buf, strlen(buf), 0, &serveraddr, &serverlen);
-    if (n < 0) 
+    if (n < 0)
       error("ERROR in recvfrom");
     printf("Echo from server: %s", buf);
     return 0;
